@@ -1,0 +1,98 @@
+[
+  {
+    "modal_id": "new_ticket_modal",
+    "title": "Create a new ticket",
+    "answers": [
+      {
+        "label": "What do you want?",
+        "style": "LONG",
+        "placeholder": "Explain your task",
+        "value": "",
+        "required": "true",
+        "custom_id": "new_ticket_modal_text"
+      },
+      {
+        "label": "How would you like to pay",
+        "style": "SHORT",
+        "placeholder": "Credit card/Cash",
+        "value": "",
+        "required": "true",
+        "custom_id": "new_ticket_modal_payment"
+      }
+    ]
+  },
+  {
+    "modal_id": "feedback_modal",
+    "title": "Please give us feedback",
+    "answers": [
+      {
+        "label": "Evaluate the order",
+        "style": "SHORT",
+        "placeholder": "1-5",
+        "value": "",
+        "required": "true",
+        "custom_id": "rating_modal_work"
+      },
+      {
+        "label": "How we can become better",
+        "style": "SHORT",
+        "placeholder": "Your text here",
+        "value": "",
+        "required": "false",
+        "custom_id": "feedback_modal_suggestions"
+      },
+      {
+        "label": "Commentary",
+        "style": "LONG",
+        "placeholder": "Your text here",
+        "value": "",
+        "required": "false",
+        "custom_id": "feedback_modal_comment"
+      }
+    ]
+  },
+  {
+    "modal_id": "surveys_modal",
+    "title": "Fill the form below to create a survey",
+    "answers": [
+      {
+        "label": "Header of the survey",
+        "style": "SHORT",
+        "placeholder": "Your text here",
+        "value": "",
+        "required": "true",
+        "custom_id": "survey_name"
+      },
+      {
+        "label": "Description of the survey",
+        "style": "SHORT",
+        "placeholder": "Your text here",
+        "value": "",
+        "required": "false",
+        "custom_id": "survey_description"
+      },
+      {
+        "label": "Options. Please delimit each option with ';'",
+        "style": "LONG",
+        "placeholder": "Options",
+        "value": "Option_1; Option_2",
+        "required": "true",
+        "custom_id": "survey_options"
+      }
+    ]
+  },
+  {
+    "modal_id": "accept_captcha_{x}_{operation}_{y}",
+    "title": "Please solve this: {x} {operation} {y} = ",
+    "answers": [
+      {
+        "label": "Your answer here",
+        "style": "SHORT",
+        "placeholder": "Your text here",
+        "value": "",
+        "required": "true",
+        "custom_id": "captcha_answer"
+      }
+    ]
+  }
+]

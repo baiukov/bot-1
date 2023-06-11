@@ -1,0 +1,91 @@
+{
+	"token": "MTExMDUwMzY2MjE4MDExODU2OA.Go0BHV.-HvfZDpwcwRUNe3w0fgMu6t2HF5bk-_Oxlicq4",
+	"server_id": 727496645767462932,
+	"command_prefix": "/",
+	"permissions": {
+		"permission_id": ["role1", "role2"],
+		"ticket_manager": ["manager"],
+		"server_booster": ["booster"]
+	},
+	"categories": [
+		{
+			"id": "stats",
+			"name": "Statistics",
+			"position": 2
+		}
+	],
+	"text_channels": {
+		"feedback": {
+			"name": "feedback",
+			"category": "Source Service"
+		},
+		"surveys": {
+			"name": "surveys",
+			"category": "Source Service"
+		}
+	},
+	"voice_channels": {
+		"members": {
+			"name": "Members",
+			"amount": 0
+		},
+		"orders_done": {
+			"name": "Done orders",
+			"amount": 0
+		},
+		"orders_in_progress": {
+			"name": "Orders in progress",
+			"amount": 0
+		},
+		"rating": {
+			"name": "Rating",
+			"amount": 0
+		},
+		"feedback_amount": {
+			"name": "Feedbacks",
+			"amount": 10
+		},
+		"repeating": {
+			"name": "Repeating orders",
+			"amount": "10%"
+		},
+		"boosters": {
+			"name": "Boosters",
+			"amount": 0
+		}
+	},
+	"sources": [
+		{
+			"name": "Из поиска в Google",
+			"role": "BHF2"
+		},
+		{
+			"name": "На форуме",
+			"role": "0GDU"
+		},
+		{
+			"name": "На вспомогательном сайте",
+			"role": "W0CL"
+		},
+		{
+			"name": "На нашем сайте",
+			"role": "FTMI"
+		},
+		{
+			"name": "Из видео на Youtube",
+			"role": "9K9O"
+		},
+		{
+			"name": "От друзей или родных",
+			"role": "4FMF"
+		},
+		{
+			"name": "Из новостей, статей, блога",
+			"role": "9D72"
+		},
+		{
+			"name": "Другое",
+			"role": "OYPE"
+		}
+	]
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "view_id": "new_ticket",
+    "buttons": [
+      {
+        "custom_id": "new_ticket_button1",
+        "label": "Create a new ticket",
+        "style": "PRIMARY",
+        "emoji": "\uD83C\uDFAB"
+      }
+    ]
+  },
+  {
+    "view_id": "remove_ticket",
+    "buttons": [
+      {
+        "custom_id": "remove_ticket_button",
+        "label": "Remove ticket",
+        "style": "DESTRUCTIVE",
+        "emoji": ""
+      }
+    ]
+  },
+  {
+    "view_id": "order_button",
+    "buttons": [
+      {
+        "custom_id": "finished_accept",
+        "label": "Accept",
+        "style": "SUCCESS",
+        "emoji": "\u2705"
+      },
+      {
+        "custom_id": "finished_need_changes",
+        "label": "Need changes",
+        "style": "SECONDARY",
+        "emoji": "\uD83D\uDD04"
+      }
+    ]
+  },
+  {
+    "view_id": "payment_button",
+    "buttons": [
+      {
+        "custom_id": "order_payed",
+        "label": "Client payed",
+        "style": "SUCCESS",
+        "emoji": ""
+      }
+    ]
+  }
+]

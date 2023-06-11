@@ -1,0 +1,177 @@
+[
+  {
+    "message_id": "new_ticket_message",
+    "text": "",
+    "embed": {
+      "color": "blue",
+      "title": "Open a new ticket",
+      "description": "To open a new ticket press the button",
+      "fields": []
+    },
+    "view_id": "new_ticket"
+  },
+  {
+    "message_id": "ticket_welcome_message",
+      "text": "",
+      "embed": {
+        "color": "blue",
+        "title": "Welcome {username}",
+        "description": "You have successfully created a ticket. We will be with you shortly",
+        "fields": [
+          {
+            "field": "Interested in",
+            "value": "{ticket_text}",
+            "inline": "False"
+          },
+          {
+            "field": "Payment Type",
+            "value": "{payment}",
+            "inline": "False"
+          }
+        ]
+      }
+  },
+  {
+    "message_id": "new_ticket_category_message",
+    "text": "",
+    "embed": {
+      "color": "purple",
+      "title": "To open a ticket choose a category",
+      "description": "Choose one category from list below",
+      "fields": []
+    },
+    "selector_id": "ticket_category"
+  },
+  {
+    "message_id": "ticket_cancelling_message",
+    "text": "",
+    "embed": {
+      "color": "purple",
+      "title": "To cancel a ticket choose reason",
+      "description": "Choose one reason",
+      "fields": []
+    },
+    "selector_id": "cancelling_reason"
+  },
+  {
+    "message_id": "order_finished",
+    "text": "",
+    "embed": {
+      "color": "red",
+      "title": "Order has been marked by developer as finished",
+      "description": "Do you want to change something or close a ticket?",
+      "fields": []
+    },
+    "view_id": "order_button"
+  },
+  {
+    "message_id": "accept_order",
+    "text": "",
+    "embed": {
+      "color": "yellow",
+      "title": "Please rate the order",
+      "description": "Choose 1 to 5 stars below",
+      "fields": []
+    },
+    "selector_id": "order_rating"
+  },
+  {
+    "message_id": "payment_message",
+    "text": "",
+    "embed": {
+      "color": "darkblue",
+      "title": "Payment",
+      "description": "Paypal E-mail: \n{email}\n\n ! IMPORTANT !\nPlease, specify Type and Reason of the transaction.\nType: Friends and Family\nReason: Present/Gift (select one)\nBe sure to send a screenshot of the payment.\nIn case of non-compliance with the above conditions, we can make a refund.",
+      "fields": []
+    },
+    "view_id": "payment_button"
+  },
+  {
+    "message_id": "test_message",
+    "text": "",
+    "embed": {
+      "color": "darkblue",
+      "title": "Payment",
+      "description": "Please pay the following amount",
+      "fields": [
+        {
+          "field": "",
+          "value": "",
+          "inline": ""
+        },
+        {
+          "field": "title2",
+          "value": "text2",
+          "inline": "True"
+        }
+      ]
+    },
+    "view_id": "payment_button"
+  },
+  {
+    "message_id": "feedback_message",
+    "text": "",
+    "embed": {
+      "color": "white",
+      "title": "{username} Review",
+      "description": "",
+      "fields": [
+        {
+          "field": "Evaluation of order",
+          "value": "{rating}",
+          "inline": "False"
+        },
+        {
+          "field": "Any suggestions for us to improve",
+          "value": "{suggestions}",
+          "inline": "False"
+        },
+        {
+          "field": "Commentary",
+          "value": "{comment}",
+          "inline": "False"
+        }
+      ]
+    }
+  },
+  {
+    "message_id": "info_for_developers",
+    "text": "",
+    "embed": {
+      "color": "green",
+      "title": "The order №{order_number}",
+      "description": "{username}, you have been added as a developer to this order",
+      "fields": [
+        {
+          "field": "Order type",
+          "value": "{type}",
+          "inline": "False"
+        },
+        {
+          "field": "Interested in",
+          "value": "{text}",
+          "inline": "False"
+        },
+        {
+          "field": "Payment type",
+          "value": "{payment}",
+          "inline": "False"
+        }
+      ]
+    }
+  },
+  {
+    "message_id": "payment_types",
+    "text": "Choose the type of payment",
+    "selector_id": "payment_types"
+  },
+  {
+    "message_id": "new_survey",
+    "text": "",
+    "embed": {
+      "color": "red",
+      "title": "{survey_name}",
+      "description": "{survey_description}"
+    }
+  }
+]

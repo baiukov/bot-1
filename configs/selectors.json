@@ -1,0 +1,62 @@
+[
+  {
+    "selector_id": "empty",
+    "placeholder": "",
+    "options": []
+  },
+  {
+    "selector_id": "ticket_category",
+    "placeholder": "Choose a ticket category",
+    "options": [
+      {
+        "id": "ticket_category_frontend",
+        "label": "Frontend",
+        "description": "Front-end task",
+        "emoji": "\uD83D\uDC4C"
+      },
+      {
+        "id": "ticket_category_backend",
+        "label": "Backend",
+        "description": "Back-end task",
+        "emoji": "\uD83D\uDE02"
+      }
+    ]
+  },
+  {
+    "selector_id": "cancelling_reason",
+    "placeholder": "Choose a removing reason",
+    "options": [
+      {
+        "id": "cancelling_reason_1",
+        "label": "No interest",
+        "description": "Client do not want this order anymore",
+        "emoji": "\uD83D\uDD74"
+      },
+      {
+        "id": "cancelling_reason_2",
+        "label": "No pay",
+        "description": "Client do not want to pay",
+        "emoji": "\uD83D\uDCB5"
+      }
+    ]
+  },
+  {
+    "selector_id": "payment_types",
+    "placeholder": "Choose the payment type",
+    "comment": "You can add own type by continuing adding an another sector like payment_type_3 and so on",
+    "options": [
+      {
+        "id": "payment_type_1",
+        "label": "Paypal1",
+        "description": "paypal1@paypal.com",
+        "emoji": "\uD83D\uDCB3"
+      },
+      {
+        "id": "payment_type_2",
+        "label": "Paypal2",
+        "description": "paypal2@paypal.com",
+        "emoji": "\uD83D\uDCB5"
+      }
+    ]
+  }
+]
