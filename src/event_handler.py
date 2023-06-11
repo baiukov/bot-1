@@ -24,7 +24,7 @@ ticket_manager = TicketManager()
 statistic_manager = StatisticsChannelManager(client)
 survey_manager = SurveyManager()
 private_survey_manager = PrivateSurveyManager(client)
-table_manager = TableManager(client)
+table_manager = TableManager.get_instance()
 members_manager = MembersManager(client)
 
 
@@ -91,6 +91,7 @@ async def postmessage(ctx, message_id):
         return
     await ctx.send(message['text'], embed=message['embed'], view=message['view'])
     await ctx.delete()
+
 
 @bot.slash_command()
 async def setdeveloper(ctx, developer, category):

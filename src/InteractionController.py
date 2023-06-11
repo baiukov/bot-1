@@ -19,9 +19,7 @@ class InteractionController:
 
     @classmethod
     async def on_click(cls, interaction):
-        print(interaction.data)
         button_id = interaction.data['custom_id']
-        print(button_id)
         ticket_manager = TicketManager.get_manager()
         survey_manager = SurveyManager.get_instance()
         private_survey_manager = PrivateSurveyManager.get_instance()

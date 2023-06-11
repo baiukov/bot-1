@@ -9,6 +9,7 @@ from src.Modal import Modal
 from src.Utils import Utils
 from src.Utils import ephemeral_messages
 
+
 class SurveyManager:
     __instance = None
 

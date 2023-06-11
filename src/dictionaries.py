@@ -41,3 +41,12 @@ input_styles = {
     "SHORT": discord.InputTextStyle.short,
     "LONG": discord.InputTextStyle.long
 }
+
+
+class Columns(Enum):
+    TICKET = 1
+    ORDER = 2
+    OFFER = 3
+    PAYED = 4
+    FINISHED = 5
+    CANCELLED = 6

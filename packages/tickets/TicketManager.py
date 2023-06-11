@@ -7,6 +7,7 @@ import discord
 from packages.database.DevChosenDB import DevChosenDB
 from packages.database.DevelopersDB import DevelopersDB
 from packages.database.OrdersDB import OrdersDB
+from packages.google.TableManager import TableManager
 from packages.tickets.Ticket import Ticket
 from packages.database.TicketDB import TicketDB
 from packages.database.ClosedTicketsDB import ClosedTicketDB
@@ -20,6 +21,8 @@ from src.Modal import Modal
 from src.Utils import ephemeral_messages
 from src.Utils import Utils
 from datetime import date
+
+from src.dictionaries import Columns
 
 
 class TicketManager:
@@ -142,6 +145,8 @@ class TicketManager:
         await channel.send(welcome_msg['text'], embed=welcome_msg['embed'], view=welcome_msg['view'])
         message = await channel.send(msgs['cancel_ticket'], view=ButtonsView.get_view_by_id("remove_ticket"))
         await message.pin()
+        table_manager = TableManager.get_instance()
+        table_manager.to_column(f"ticket-{ticket.get_id()}", Columns.TICKET)
         await StatisticsChannelManager.update_orders_in_progress()
 
     @classmethod
@@ -281,6 +286,8 @@ class TicketManager:
         await order_channel.send(welcome_msg['text'], embed=welcome_msg['embed'], view=welcome_msg['view'])
         await order_channel.set_permissions(member, view_channel=True, send_messages=True)
         ephemeral_messages[user] = await interaction.original_response()
+        table_manager = TableManager.get_instance()
+        table_manager.to_column(f"ticket-{ticket_id}", Columns.ORDER)
         await channel.edit(name=channel.name + "-0" + "﹪")
         await StatisticsChannelManager.update_repeating()
 
@@ -530,6 +537,8 @@ class TicketManager:
         finished_orders_db.save(order[0], 5, "", "")
         await interaction.channel.send(msgs['force_finished'])
         await interaction.response.defer()
+        table_manager = TableManager.get_instance()
+        table_manager.to_column(f"ticket-{ticket_id}", Columns.FINISHED)
         await StatisticsChannelManager.update_rating()
         await StatisticsChannelManager.update_finished_orders()
         await StatisticsChannelManager.update_feedbacks()
@@ -594,6 +603,8 @@ class TicketManager:
         to_channel = await utils.get_channel_by_name(to_channel_name)
         finished_orders_db.save(order[0], rating, suggestions, feedback)
         message2 = utils.get_line(msgs['order_accepted'], {"rating": rate_str})
+        table_manager = TableManager.get_instance()
+        table_manager.to_column(f"ticket-{ticket_id}", Columns.FINISHED)
         await to_channel.send(message2)
         await channel.send(message['text'], embed=embed)
         await interaction.response.defer()
@@ -688,6 +699,8 @@ class TicketManager:
         embed.add_field(name="Payment type: ", value=ptype, inline=False)
         embed.add_field(name="Amount: ", value=amount, inline=False)
         await interaction.response.send_message(message['text'], view=message['view'], embed=embed)
+        table_manager = TableManager.get_instance()
+        table_manager.to_column(f"ticket-{ticket_id}", Columns.OFFER)
 
     @classmethod
     async def order_payed(cls, interaction):
@@ -703,3 +716,6 @@ class TicketManager:
         ordersDB = OrdersDB.get_instance()
         ordersDB.update({"is_payed": True}, "ticket_id", ticket_id)
         await interaction.response.send_message(msgs["set_payed"])
+        table_manager = TableManager.get_instance()
+        table_manager.to_column(f"ticket-{ticket_id}", Columns.PAYED)
+
