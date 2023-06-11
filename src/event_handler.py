@@ -52,6 +52,7 @@ async def on_member_join(member):
 
 @bot.event
 async def on_member_remove(member):
+    members_manager.remove_member(member)
     await statistic_manager.update_users()
 
 

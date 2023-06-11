@@ -61,6 +61,11 @@ class MembersManager:
         members_db.add(member.id)
 
     @classmethod
+    def remove_member(cls, member):
+        members_db = MembersDB.get_instance()
+        members_db.delete("member_id", member.id)
+
+    @classmethod
     def role_added(cls, before, after):
         if len(before.roles) > len(after.roles):
             return
