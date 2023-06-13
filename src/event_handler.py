@@ -16,16 +16,6 @@ from packages.surveys.SurveyManager import SurveyManager
 client = Client.get_instance()
 bot = client.get_bot()
 logger = Logger.get_logger()
-utils = Utils.get_instance(client)
-manager = Manager()
-controller = InteractionController.get_instance()
-ticket_message_manager = TicketMessageManager()
-ticket_manager = TicketManager()
-statistic_manager = StatisticsChannelManager(client)
-survey_manager = SurveyManager()
-private_survey_manager = PrivateSurveyManager(client)
-table_manager = TableManager.get_instance()
-members_manager = MembersManager(client)
 
 
 # Events
@@ -38,6 +28,7 @@ async def on_ready():
 
 @bot.event
 async def on_click(interaction):
+    controller = InteractionController.get_instance()
     try:
         await controller.on_click(interaction)
     except:
@@ -46,18 +37,24 @@ async def on_click(interaction):
 
 @bot.event
 async def on_member_join(member):
+    statistic_manager = StatisticsChannelManager.get_instance(client)
+    members_manager = MembersManager(client)
     members_manager.add_member(member)
     await statistic_manager.update_users()
 
 
 @bot.event
 async def on_member_remove(member):
+    members_manager = MembersManager(client)
+    statistic_manager = StatisticsChannelManager.get_instance(client)
     members_manager.remove_member(member)
     await statistic_manager.update_users()
 
 
 @bot.event
 async def on_member_update(before, after):
+    statistic_manager = StatisticsChannelManager.get_instance(client)
+    members_manager = MembersManager(client)
     if before.roles != after.roles:
         members_manager.role_added(before, after)
         await statistic_manager.update_boosters()
@@ -65,26 +62,20 @@ async def on_member_update(before, after):
 
 @bot.listen()
 async def on_message(message):
+    ticket_message_manager = TicketMessageManager()
     await ticket_message_manager.on_message(message)
 
 
 @bot.slash_command()
 async def payment(ctx, amount):
+    ticket_manager = TicketManager()
     await ticket_manager.set_payment_step1(ctx, amount)
 
 
 # Commands
 @bot.slash_command()
-async def test(ctx):
-    for channel in bot.get_guild(727496645767462932).channels:
-        try:
-            await channel.delete()
-        except:
-            pass
-
-
-@bot.slash_command()
 async def postmessage(ctx, message_id):
+    utils = Utils.get_instance(client)
     message = await utils.get_message(message_id)
     if not message:
         await ctx.respond("Incorrect message id", ephemeral=True)
@@ -95,54 +86,70 @@ async def postmessage(ctx, message_id):
 
 @bot.slash_command()
 async def setdeveloper(ctx, developer, category):
+    manager = Manager.get_instance()
     await manager.set_developer(ctx, developer, category)
-
+    
 
 @bot.slash_command()
 async def devlist(ctx):
+    manager = Manager.get_instance()
     await manager.dev_list(ctx)
 
 
 @bot.slash_command()
-async def removedev(ctx, username):
+async def unsetdev(ctx, username):
+    manager = Manager.get_instance()
     await manager.remove_developer(ctx, username)
 
 
 @bot.slash_command()
 async def createorder(ctx):
+    ticket_manager = TicketManager()
     await ticket_manager.select_dev(ctx)
 
 
 @bot.slash_command()
-async def developeradd(ctx):
+async def devadd(ctx):
+    ticket_manager = TicketManager()
     await ticket_manager.select_add_developer(ctx)
+
+@bot.slash_command()
+async def devremove(ctx):
+    ticket_manager = TicketManager()
+    await ticket_manager.select_remove_developer(ctx)
 
 
 @bot.slash_command()
 async def progress(ctx, percentage):
+    ticket_manager = TicketManager()
     await ticket_manager.set_progress(ctx, percentage)
 
 
 @bot.slash_command()
 async def orders(ctx):
+    manager = Manager.get_instance()
     await manager.send_orders(ctx)
 
 
 @bot.slash_command()
 async def survey(ctx):
+    survey_manager = SurveyManager.get_instance()
     await survey_manager.open_modal(ctx)
 
 
 @bot.slash_command()
 async def results(ctx):
+    survey_manager = SurveyManager.get_instance()
     await survey_manager.send_results(ctx)
 
 
 @bot.slash_command()
 async def privatesurvey(ctx, excluded_roles=""):
+    private_survey_manager = PrivateSurveyManager.get_instance(client)
     await private_survey_manager.open_modal(ctx, excluded_roles)
 
 
 @bot.slash_command()
 async def addtableeditor(ctx, email):
+    table_manager = TableManager.get_instance()
     await table_manager.add_editor(ctx, email)

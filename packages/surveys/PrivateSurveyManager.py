@@ -1,3 +1,5 @@
+import asyncio
+
 import discord
 
 from packages.database.PrivateMessagesDB import PrivateMessagesDB
@@ -47,6 +49,7 @@ class PrivateSurveyManager:
 
     @classmethod
     async def send_survey(cls, interaction):
+        await interaction.response.defer()
         bot = Client.get_bot()
         cfg = Configs.main_config
         server_id = cfg['server_id']
@@ -76,7 +79,6 @@ class PrivateSurveyManager:
                 dm_msgs_db.add(message.id, survey_id)
             except:
                 continue
-        await interaction.response.send_message("survey created", ephemeral=True)
 
     @classmethod
     async def add_vote(cls, interaction):

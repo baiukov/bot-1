@@ -151,7 +151,6 @@ class TicketManager:
 
     @classmethod
     async def remove_ticket(cls, interaction: discord.Interaction):
-        print("here")
         user: discord.Member = interaction.user
         is_manager = cls.__utils.has_permission(user, "ticket_manager")
         msgs = Configs.translation_config
@@ -204,12 +203,13 @@ class TicketManager:
             if guild_channel.name == channel_infos[0] + "-" + channel_infos[1] + "-order":
                 order_channel = guild_channel
         if order_channel:
-            overwrites = order_channel
+            overwrites = order_channel.overwrites
             await channel_manager.archive(order_channel)
             for key in overwrites:
                 await order_channel.set_permissions(target=key, view_channel=False)
-        msgs = Configs.translation_config
-        await interaction.response.send_message(msgs['ticket_cancelled'])
+        await interaction.response.defer()
+        await asyncio.sleep(3000)
+        await interaction.message.delete()
         ephemeral_messages[interaction.user] = await interaction.original_response()
 
     @classmethod
@@ -318,6 +318,32 @@ class TicketManager:
         ephemeral_messages[ctx.author] = await interaction.original_response()
 
     @classmethod
+    async def select_remove_developer(cls, ctx):
+        developersDB = DevelopersDB.get_instance()
+        channel = ctx.channel
+        msgs = Configs.translation_config
+        err = msgs['error']
+        user = ctx.author
+        utils = Utils.get_instance(Client.get_instance())
+        if not utils.has_permission(user, "ticket_manager"):
+            interaction = ctx.respond(err + msgs['not_enough_perm'], ephemeral=True)
+            ephemeral_messages[ctx.author] = await interaction.original_response()
+            return
+        if not channel.name.startswith("ticket"):
+            interaction = ctx.respond(err + msgs['not_ticket'], ephemeral=True)
+            ephemeral_messages[ctx.author] = await interaction.original_response()
+            return
+        ticket_id = channel.name.split("-")[1]
+        suitable_developers = developersDB.get_related(ticket_id)
+        if len(suitable_developers) == 0:
+            interaction = ctx.respond(err + msgs['no_devs'])
+            ephemeral_messages[ctx.author] = await interaction.original_response()
+            return
+        view = utils.get_dev_selector(suitable_developers, is_removing=True)
+        interaction = await ctx.respond(view=view, ephemeral=True)
+        ephemeral_messages[ctx.author] = await interaction.original_response()
+
+    @classmethod
     async def add_developer(cls, interaction):
         developer_static = interaction.data['values'][0].split("_")[1]
         utils = Utils.get_instance(Client.get_instance())
@@ -359,6 +385,37 @@ class TicketManager:
         await order_channel.set_permissions(member, view_channel=True, send_messages=True)
         if not dev_chosen_db.is_exists(developer_static, order_id):
             dev_chosen_db.create_relation(developer_static, order_id)
+
+
+    @classmethod
+    async def remove_developer(cls, interaction):
+        developer_static = interaction.data['values'][0].split("_")[1]
+        utils = Utils.get_instance(Client.get_instance())
+        member = await utils.check_developer(interaction)
+        if not member:
+            return
+        dev_chosen_db = DevChosenDB.get_instance()
+        channel = interaction.channel
+        channel_infos = channel.name.split("-")
+        ticket_id = channel_infos[1]
+        ordersDB = OrdersDB.get_instance()
+        order = ordersDB.fetch_one("ticket_id", ticket_id)
+        if not order:
+            return
+        order_id = order[0]
+        is_order_channel = channel_infos[2].startswith("order") if len(channel_infos) > 2 else False
+        order_channel_name = channel.name if is_order_channel else \
+            channel_infos[0] + "-" + channel_infos[1] + "-order"
+        order_channel = channel if is_order_channel else await utils.get_channel_by_name(order_channel_name)
+        await order_channel.set_permissions(member, view_channel=False, send_messages=False)
+        msgs = Configs.translation_config
+        message = utils.get_line(msgs['removing_success'], {
+            "developer": f"{member.name}#{member.discriminator}"
+        })
+        await interaction.response.send_message(message, ephemeral=True)
+        ephemeral_messages[interaction.user] = await interaction.original_response()
+        if dev_chosen_db.is_exists(developer_static, order_id):
+            dev_chosen_db.remove_relation(developer_static, order_id)
 
     @classmethod
     async def set_progress(cls, ctx, percentage_str, is_auto=False):
@@ -472,7 +529,6 @@ class TicketManager:
         y = str(random.randint(0, 9))
         operation = random.choice(["+", "-", "*"])
         utils = cls.__utils
-        print(utils)
         modal = Modal.get_modal("accept_captcha_{x}_{operation}_{y}")
         args = {
             "x": x,

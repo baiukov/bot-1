@@ -17,17 +17,16 @@ class StatisticsChannelManager:
     __voice_categories = {}
 
     @classmethod
-    def __init__(cls, client):
+    def __init__(cls, client, bot):
         cls.__client = client
         cls.__bot = client.get_bot()
         cls.__guild = cls.__bot.get_guild(Configs.main_config['server_id'])
         cls.__utils = Utils.get_instance(client)
 
-
     @classmethod
-    def get_instance(cls, client=None):
+    def get_instance(cls, client=None, bot=None):
         if not cls.__instance:
-            cls.__instance = StatisticsChannelManager(client)
+            cls.__instance = StatisticsChannelManager(client, bot)
         return cls.__instance
 
     @classmethod
@@ -170,7 +169,9 @@ class StatisticsChannelManager:
     async def update_users(cls):
         guild = cls.__guild
         voice_map = cls.get_voice("members")
-        new_value = voice_map['amount'] if voice_map['amount'] else len(guild.members)
+        real = len(guild.members)
+        false = voice_map['amount']
+        new_value = (false + real) if false else real
         voice = cls.get_voice("members")['channel']
         if not voice:
             return
@@ -182,7 +183,9 @@ class StatisticsChannelManager:
     async def update_finished_orders(cls):
         db = FinishedOrdersDB.get_instance()
         voice_map = cls.get_voice("orders_done")
-        new_value = voice_map['amount'] if voice_map['amount'] else len(db.fetch_all())
+        real = len(db.fetch_all())
+        false = voice_map['amount']
+        new_value = (false + real) if false else real
         voice = voice_map['channel']
         if not voice:
             return
@@ -199,7 +202,8 @@ class StatisticsChannelManager:
                     (channel.category and not channel.category.name.startswith("Archive")):
                 new_value += 1
         voice_map = cls.get_voice("orders_in_progress")
-        new_value = voice_map['amount'] if voice_map['amount'] else new_value
+        false = voice_map['amount']
+        new_value = (false + new_value) if false else new_value
         voice = voice_map['channel']
         if not voice:
             return
@@ -214,7 +218,9 @@ class StatisticsChannelManager:
         if not avg:
             avg = 0
         voice_map = cls.get_voice("rating")
-        new_value = voice_map['amount'] if voice_map['amount'] else "{:.2f}".format(float(avg))
+        false = voice_map['amount']
+        false_avg = (false + avg) / 2
+        new_value = "{:.2f}".format(float(false_avg)) if false else "{:.2f}".format(float(avg))
         voice = voice_map['channel']
         if not voice:
             return
@@ -232,7 +238,8 @@ class StatisticsChannelManager:
         async for _ in feed_channel.history(limit=10000):
             real += 1
         voice_map = cls.get_voice("feedback_amount")
-        amount = voice_map['amount'] if voice_map['amount'] else real
+        false = voice_map['amount']
+        amount = (false + real) if false else real
         voice = voice_map['channel']
         if not voice:
             return
@@ -247,9 +254,12 @@ class StatisticsChannelManager:
         amount = ticketDB.get_repeating_amount()[0][0]
         all_amount = len(ordersDB.fetch_all())
         percentage = (amount / all_amount) * 100 if all_amount != 0 else 0.0
-        real = f"{percentage:.2f}%"
         voice_map = cls.get_voice("repeating")
-        amount = voice_map['amount'] if voice_map['amount'] else real
+        real = f"{percentage:.2f}%"
+        false = voice_map['amount']
+        false_percent = false + percentage
+        false_str = f"{false_percent:.2f}%"
+        amount = false_str if false else real
         voice = voice_map['channel']
         if not voice:
             return
@@ -270,7 +280,8 @@ class StatisticsChannelManager:
                     if role.name == role_name:
                         counter += 1
         voice_map = cls.get_voice("boosters")
-        new_value = voice_map['amount'] if voice_map['amount'] else counter
+        false = voice_map['amount']
+        new_value = (false + counter) if false else counter
         voice = voice_map['channel']
         if not voice:
             return

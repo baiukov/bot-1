@@ -45,6 +45,22 @@ class DevelopersDB(Database):
         return result
 
     @classmethod
+    def get_related(cls, ticket_id):
+        sql = """
+                SELECT * 
+                FROM developers 
+                WHERE static_id 
+                    IN
+                    (SELECT dev_chosen.dev_id
+                     FROM dev_chosen
+                     JOIN orders 
+                     ON orders.ORDER_ID = dev_chosen.ORDER_ID 
+                        AND orders.TICKET_ID = %s)
+              """
+        result = cls.execute(sql, (ticket_id,))
+        return result
+
+    @classmethod
     def is_chosen_dev(cls, ticket_id, dev_id):
         sql = """
             SELECT * 

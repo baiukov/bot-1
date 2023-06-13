@@ -50,5 +50,6 @@
   "thanks_for_participation": "Thank you for participation in a survey!",
   "incorrect_answer": "Your answer is not correct",
   "force_finished": "Manager forced to finished this order",
-  "survey_ended": "\u2705 The survey has been finished!"
+  "survey_ended": "\u2705 The survey has been finished!",
+  "removing_success": "You have successfully removed a developer {developer} from this order"
 }

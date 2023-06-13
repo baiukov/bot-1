@@ -185,7 +185,7 @@ class Utils:
         return line
 
     @classmethod
-    def get_dev_selector(cls, all_developers, is_addition=False):
+    def get_dev_selector(cls, all_developers, is_addition=False, is_removing=False):
         msgs = Configs.translation_config
         options_raw = []
         for developer in all_developers:
@@ -196,8 +196,13 @@ class Utils:
                 "emoji": "👨‍💻"
             }
             options_raw.append(option)
+        add_word = ""
+        if is_addition:
+            add_word = "_add"
+        elif is_removing:
+            add_word = "_remove"
         selector = Selection.from_raw(
-            custom_id=f"developer_choise{'_add' if is_addition else ''}",
+            custom_id=f"developer_choise{add_word}",
             placeholder=msgs['choose_dev'],
             options_raw=options_raw
         )
@@ -319,7 +324,8 @@ class Utils:
         components = data['components']
         name = components[0]['components'][0]['value']
         description = components[1]['components'][0]['value']
-        options_str = components[2]['components'][0]['value']
+        options_str = components[3]['components'][0]['value']
+        image_link = components[2]['components'][0]['value']
         utils = Utils.get_instance()
         author = interaction.user
         options = options_str.replace(" ", "").replace("\n", "").split(";")
@@ -343,6 +349,8 @@ class Utils:
             "survey_name": name,
             "survey_description": description
         })
+        if image_link:
+            message['embed'].set_image(url=image_link)
         return {
             "survey_id": survey_id,
             "text": message['text'],

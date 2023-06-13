@@ -55,7 +55,8 @@ class Manager:
             await ctx.response.send_message(err + msgs['dev_exists'])
             return
         developersDB.create(developer.id, username, category)
-        await ctx.response.send_message(msgs['new_developer'] + f"{username} - {category}", ephemeral=True)
+        msg = await ctx.response.send_message(msgs['new_developer'] + f"{username} - {category}", ephemeral=True)
+        ephemeral_messages[ctx.author] = msg
 
     @classmethod
     async def dev_list(cls, ctx):
@@ -77,7 +78,7 @@ class Manager:
         await ctx.response.send_message(message, ephemeral=True)
 
     @classmethod
-    async def remove_developer(cls, ctx, username):
+    async def unset_developer(cls, ctx, username):
         msgs = Configs.translation_config
         err = msgs['error']
         if not cls.__utils.has_permission(ctx.author, "ticket_manager"):

@@ -27,19 +27,19 @@
 	"voice_channels": {
 		"members": {
 			"name": "Members",
-			"amount": 0
+			"amount": 2
 		},
 		"orders_done": {
 			"name": "Done orders",
-			"amount": 0
+			"amount": 100
 		},
 		"orders_in_progress": {
 			"name": "Orders in progress",
-			"amount": 0
+			"amount": 50
 		},
 		"rating": {
 			"name": "Rating",
-			"amount": 0
+			"amount": 10
 		},
 		"feedback_amount": {
 			"name": "Feedbacks",
@@ -47,11 +47,11 @@
 		},
 		"repeating": {
 			"name": "Repeating orders",
-			"amount": "10%"
+			"amount": 0
 		},
 		"boosters": {
 			"name": "Boosters",
-			"amount": 0
+			"amount": 5
 		}
 	},
 	"sources": [

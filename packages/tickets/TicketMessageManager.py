@@ -43,12 +43,12 @@ class TicketMessageManager:
             else:
                 await to_channel.send(f"**Client** said: {message.content}")
         else:
-            if is_manager:
-                await to_channel.send(f"**Manager {author.display_name}** said: {message.content}")
-            else:
+            if not is_manager:
                 developersDB = DevelopersDB()
                 developer = developersDB.fetch_one("static_id", author.id)
                 if not developer:
                     return
                 dev_category = developer[2]
                 await to_channel.send(f"**{dev_category} developer** said: {message.content}")
+            else:
+                await to_channel.send(f"**Manager {author.display_name}** said: {message.content}")

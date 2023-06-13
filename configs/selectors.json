@@ -24,16 +24,22 @@
   },
   {
     "selector_id": "cancelling_reason",
-    "placeholder": "Choose a removing reason",
+    "placeholder": "Choose a closing reason",
     "options": [
       {
         "id": "cancelling_reason_1",
+        "label": "Success",
+        "description": "Order has been successfully finished",
+        "emoji": "✅"
+      },
+      {
+        "id": "cancelling_reason_2",
         "label": "No interest",
         "description": "Client do not want this order anymore",
         "emoji": "\uD83D\uDD74"
       },
       {
-        "id": "cancelling_reason_2",
+        "id": "cancelling_reason_3",
         "label": "No pay",
         "description": "Client do not want to pay",
         "emoji": "\uD83D\uDCB5"

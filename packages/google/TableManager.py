@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import gspread
 import gspread.utils
 from oauth2client.service_account import ServiceAccountCredentials
@@ -5,7 +7,8 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 class TableManager:
     __instance = None
-    __sheet = None
+    __spread_sheet = None
+    __work_sheet = None
 
     def __init__(self):
         self.__instance = self
@@ -18,6 +21,10 @@ class TableManager:
 
     @classmethod
     def create_table_if_not_exists(cls):
+        now = datetime.now()
+        current_month = now.strftime("%B")
+        current_year = now.strftime("%y")
+        current_name = current_year + " " + current_month
         table_name = "Воронка продаж"
         scope = [
             'https://www.googleapis.com/auth/spreadsheets',
@@ -27,10 +34,15 @@ class TableManager:
         gclient = gspread.authorize(credentials)
         cls.__gclient = gclient
         try:
-            sheet = gclient.open(table_name).sheet1
+            spread_sheet = gclient.open(table_name)
         except Exception as err:
-            sheet = gclient.create(table_name)
-        cls.__sheet = sheet
+            spread_sheet = gclient.create(table_name)
+        cls.__spread_sheet = spread_sheet
+        try:
+            sheet = spread_sheet.worksheet(current_name)
+        except Exception as err:
+            sheet = spread_sheet.add_worksheet(current_name, rows=100, cols=20)
+        cls.__work_sheet = sheet
         header = {
             "A1": "Первичный контакт",
             "B1": "Создан заказ",
@@ -54,12 +66,12 @@ class TableManager:
 
     @classmethod
     async def add_editor(cls, ctx, email):
-        cls.__sheet.share(email, perm_type="user", role="writer")
+        cls.__spread_sheet.share(email, perm_type="user", role="writer")
         await ctx.respond("Email added", ephemeral=True)
 
     @classmethod
     def find(cls, search_string):
-        sheet = cls.__sheet
+        sheet = cls.__work_sheet
         values = sheet.get_all_values()
         found_cell = None
         for row in values:
@@ -81,7 +93,7 @@ class TableManager:
     @classmethod
     def get_empty(cls, column):
         column_index = column.value
-        sheet = cls.__sheet
+        sheet = cls.__work_sheet
         values = sheet.col_values(column_index)
         last_value = None
         for value in values:
@@ -97,7 +109,7 @@ class TableManager:
 
     @classmethod
     def to_column(cls, value, column_index):
-        sheet = cls.__sheet
+        sheet = cls.__work_sheet
         cell_address = cls.find(value)
         if cell_address:
             sheet.update(cell_address, "")

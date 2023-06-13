@@ -15,7 +15,7 @@
     "buttons": [
       {
         "custom_id": "remove_ticket_button",
-        "label": "Remove ticket",
+        "label": "Close ticket",
         "style": "DESTRUCTIVE",
         "emoji": ""
       }

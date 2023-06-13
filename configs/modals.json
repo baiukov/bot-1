@@ -72,6 +72,14 @@
         "custom_id": "survey_description"
       },
       {
+        "label": "Image",
+        "style": "SHORT",
+        "placeholder": "Image link",
+        "value": "",
+        "required": "false",
+        "custom_id": "survey_image"
+      },
+      {
         "label": "Options. Please delimit each option with ';'",
         "style": "LONG",
         "placeholder": "Options",

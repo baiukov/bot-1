@@ -60,19 +60,19 @@ class Client:
         bot = cls.__bot
         views_configs = Configs.buttons_config
         survey_manager = SurveyManager.get_instance()
+        table_manager = TableManager.get_instance()
+        members_manger = MembersManager.get_instance(client=cls.__instance)
+        statistic_manager = StatisticsChannelManager.get_instance(client=cls.__instance, bot=bot)
+        channel_manager = TicketChannelManager(cls.__instance)
+        Utils.get_instance(cls.__instance)
+        table_manager.create_table_if_not_exists()
         for view_config in views_configs:
             bot.add_view(ButtonsView.get_view_by_id(view_config['view_id']))
         views = await survey_manager.get_views()
         for view in views:
             bot.add_view(view)
-        channel_manager = TicketChannelManager(cls.__instance)
         await channel_manager.manage_ticket_channel()
-        Utils.get_instance(cls.__instance)
-        statistic_manager = StatisticsChannelManager.get_instance(cls.__instance)
-        members_manger = MembersManager.get_instance(client=cls.__instance)
         await members_manger.update_member_roles()
-        table_manager = TableManager.get_instance()
-        table_manager.create_table_if_not_exists()
         await statistic_manager.manage()
         await statistic_manager.update_all()
         await cls.start_cycle()

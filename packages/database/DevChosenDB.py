@@ -20,6 +20,11 @@ class DevChosenDB(Database):
         })
 
     @classmethod
+    def remove_relation(cls, dev_id: str, order_id: int):
+        sql = f"DELETE FROM `{cls.table_name}` WHERE DEV_ID = %s AND ORDER_ID = %s"
+        cls.execute(sql, (dev_id, order_id))
+
+    @classmethod
     def is_exists(cls, dev_id: str, order_id: str):
         sql = f"SELECT * FROM {cls.table_name} WHERE DEV_ID = %s AND ORDER_ID = %s"
         result = cls.execute(sql, (dev_id, order_id))

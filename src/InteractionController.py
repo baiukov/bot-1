@@ -47,6 +47,9 @@ class InteractionController:
             case "developer_choise_add":
                 await utils.remove_ephemeral(interaction)
                 await ticket_manager.add_developer(interaction)
+            case "developer_choise_remove":
+                await utils.remove_ephemeral(interaction)
+                await ticket_manager.remove_developer(interaction)
             case "finished_need_changes":
                 await utils.remove_ephemeral(interaction)
                 await ticket_manager.accept_message(interaction)
