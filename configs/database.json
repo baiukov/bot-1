@@ -1,6 +1,7 @@
 {
-  "host": "localhost",
-  "user": "root",
-  "password": "",
-  "database": "bot"
+  "host": "mysql",
+  "user": "bot",
+  "port": 3360,
+  "password": "6PYatF21",
+  "database": "botdb"
 }
