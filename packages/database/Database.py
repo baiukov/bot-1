@@ -14,7 +14,8 @@ class Database:
         user=database_config['user'],
         password=database_config['password'],
         host=database_config['host'],
-        database=database_config['database']
+        database=database_config['database'],
+        port=database_config['port']
     ).cursor()
 
     def get_table_name(self):
