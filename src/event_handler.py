@@ -66,14 +66,14 @@ async def on_message(message):
     await ticket_message_manager.on_message(message)
 
 
-@bot.slash_command()
+@bot.slash_command(description="выставить оплату")
 async def payment(ctx, amount):
     ticket_manager = TicketManager()
     await ticket_manager.set_payment_step1(ctx, amount)
 
 
 # Commands
-@bot.slash_command()
+@bot.slash_command(description="опубликовать сообщение")
 async def postmessage(ctx, message_id):
     utils = Utils.get_instance(client)
     message = await utils.get_message(message_id)
@@ -84,72 +84,73 @@ async def postmessage(ctx, message_id):
     await ctx.delete()
 
 
-@bot.slash_command()
+@bot.slash_command(description="установить разработчика")
 async def setdeveloper(ctx, developer, category):
     manager = Manager.get_instance()
     await manager.set_developer(ctx, developer, category)
-    
 
-@bot.slash_command()
+
+@bot.slash_command(description="список разработчиков")
 async def devlist(ctx):
     manager = Manager.get_instance()
     await manager.dev_list(ctx)
 
 
-@bot.slash_command()
+@bot.slash_command(description="удалить разработчика")
 async def unsetdev(ctx, username):
     manager = Manager.get_instance()
     await manager.remove_developer(ctx, username)
 
 
-@bot.slash_command()
+@bot.slash_command(description="создать заказ из тикета")
 async def createorder(ctx):
     ticket_manager = TicketManager()
     await ticket_manager.select_dev(ctx)
 
 
-@bot.slash_command()
+@bot.slash_command(description="добавить разработчика к заказу")
 async def devadd(ctx):
     ticket_manager = TicketManager()
     await ticket_manager.select_add_developer(ctx)
 
-@bot.slash_command()
+
+@bot.slash_command(description="удалить разработчика от заказа")
 async def devremove(ctx):
     ticket_manager = TicketManager()
     await ticket_manager.select_remove_developer(ctx)
 
 
-@bot.slash_command()
+@bot.slash_command(description="показать прогресс по заказу")
 async def progress(ctx, percentage):
     ticket_manager = TicketManager()
     await ticket_manager.set_progress(ctx, percentage)
 
 
-@bot.slash_command()
+@bot.slash_command(description="список заказов")
 async def orders(ctx):
     manager = Manager.get_instance()
     await manager.send_orders(ctx)
 
 
-@bot.slash_command()
+@bot.slash_command(description="опубликовать голосование")
 async def survey(ctx):
     survey_manager = SurveyManager.get_instance()
     await survey_manager.open_modal(ctx)
 
 
-@bot.slash_command()
+@bot.slash_command(description="результаты голосования")
 async def results(ctx):
     survey_manager = SurveyManager.get_instance()
     await survey_manager.send_results(ctx)
 
 
-@bot.slash_command()
+@bot.slash_command(description="отправить личный опрос")
 async def privatesurvey(ctx, excluded_roles=""):
     private_survey_manager = PrivateSurveyManager.get_instance(client)
     await private_survey_manager.open_modal(ctx, excluded_roles)
 
 
-@bot.slash_command()
+@bot.slash_command(description="добавить участника гугл доски")
 async def addtableeditor(ctx, email):
     table_manager = TableManager.get_instance()
     await table_manager.add_editor(ctx, email)
